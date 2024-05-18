@@ -1,0 +1,16 @@
+[package]
+name = "canpi-panel"
+version = "0.1.0"
+authors = ["Mark Thornber <mark.thornber@merg.org.uk>"]
+edition = "2021"
+license = "GPL-3.0-0r-later"
+readme = "README.md"
+description = "A signalling panel web application"
+repository = "https://github.com/emthornbem/canpi-panel"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "canpi-panel"
+path = "src/main.rs"
+
+[dependencies]
