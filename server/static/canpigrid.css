@@ -1,0 +1,254 @@
+:root {
+    font-size: calc(0.5em + 1vw);
+    box-sizing: border-box;
+    --main-bg: AliceBlue;
+    --main-fg: rgb(27, 55, 101);
+}
+
+*,
+::before,
+::after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: Roboto, "DejaVu Sans", sans-serif;
+}
+
+body * + * {
+    margin-top: 1.5em;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+    font-size: 100%;
+    width: 150px;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.item1 {
+    grid-area: header;
+    margin: 0;
+    padding: 1em 1.5em;
+    border-right: 0.5em;
+    color: var(--main-fg);
+}
+.item2 {
+    grid-area: menu;
+    margin: 0;
+    padding: 1em;
+    overflow: hidden;
+}
+.item2 ul {
+    list-style-type: none;
+    margin: 0;
+    display: block;
+    padding: 0;
+}
+
+/* menu links */
+.item2 li a {
+    text-align: center;
+    padding: 0;
+    text-decoration: none;
+}
+
+.item2 li a:active {
+    background-color: var(--main-fg);
+    color: var(--main-bg);
+}
+
+/* links - change colour on hover */
+.item2 li a:hover:not(a:active) {
+    background-color: var(--main-fg);
+    color: var(--main-bg);
+}
+
+.item3 {
+    grid-area: content;
+    padding: 1em 1.5em;
+    margin: 0;
+}
+.item4 {
+    grid-area: footer;
+    padding: 1em 1.5em;
+    margin: 0;
+    color: var(--main-fg);
+}
+
+.item4 p { margin: 0 }
+
+.item4 a {
+    font-family: Consolas, "DejaVu Sans Mono", monospace;
+}
+
+.item5 {
+    grid-area: rlogo;
+    padding: 1em 1.5em;
+    margin: 0;
+}
+
+.item6 {
+    grid-area: mlogo;
+    padding: 1em 1.5em;
+    margin: 0;
+}
+
+.grid-container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-areas:
+        'rlogo header'
+        'menu  content'
+        'mlogo footer';
+    grid-template-rows: 150px 1fr auto;
+    grid-template-columns: 1fr 3fr;
+    gap: 0.25em;
+    background-color: var(--main-bg);
+    padding: 0.5em;
+}
+
+.grid-container > div {
+    background-color: var(--main-bg);
+    text-align: center;
+    padding: 1em 0;
+}
+
+.merglogo {
+    bottom: 0;
+    margin: 0;
+}
+
+.rpilogo {
+    top: 0;
+    margin: 0;
+}
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 10em;
+    background-color: var(--main-fg);
+    color: var(--main-bg);
+    text-align: center;
+    padding: 0.5em 0;
+    border-radius: 0.5em;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -5em;
+
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -0.25em;
+    border-width: 0.25em;
+    border-style: solid;
+    border-color: var(--main-fg) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+#attributes {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#attributes td, #attributes th {
+    border: 1px solid skyblue;
+    padding: 0.5em;
+}
+
+#attributes tr:nth-child(even) { background-color: skyblue; }
+
+#attributes tr:hover { background-color: ivory; }
+
+/* Button used to open the edit form */
+.edit-button {
+    background-color: var(--main-bg);
+    color: var(--main-fg);
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+/* The popup edit form - hidden by default */
+.edit-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    border: 0.25em solid OldLace;
+    z-index: 9;
+}
+
+/* Add styles to the edit form container */
+.edit-container {
+    padding: 0.5em;
+    background-color: linen;
+}
+
+/* Full-width input fields */
+.edit-container input[type=text] {
+    width: 100%;
+    padding: 1em;
+    margin: 0.33em 0 1.33em 0;
+    border: none;
+    background: var(--main-bg);
+}
+
+.edit-container input[type=text]:focus {
+    background-color: OldLace;
+    color: var(--main-fg);
+    outline: none;
+}
+
+.edit-container .btn {
+    background-color: var(--main-fg);
+    color: var(--main-bg);
+    padding: 1em 1.25em;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.8;
+}
+
+.edit-container .cancel {
+    background-color: red;
+}
+
+.edit-container .btn:hover, .edit-button:hover {
+    opacity: 1;
+}

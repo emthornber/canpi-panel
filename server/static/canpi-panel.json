@@ -1,0 +1,18 @@
+{
+  "panel_dir": {
+    "prompt": "Panel Configuration Files",
+    "tooltip": "File path of the panel configuration directory",
+    "current": "/usr/local/etc/canpi_panel/panels",
+    "default": "/usr/local/etc/canpi_panel/panels",
+    "format": ".*{1,}",
+    "action": "Edit"
+  },
+  "cangrid_uri": {
+    "prompt": "GridConnect URI",
+    "tooltip": "Address of GridConnect port e.g. localhost:5550",
+    "current": "localhost:5550",
+    "default": "localhost:5550",
+    "format": "[a-zA-Z0-9]{1,}",
+    "action": "Edit"
+  }
+}

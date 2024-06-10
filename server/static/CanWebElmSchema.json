@@ -1,0 +1,200 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "CBUS canweb Elm",
+    "definitions": {
+	"name": {
+	    "type": "string",
+	    "description": "Name to be used as a reference and/or label on a tile"
+	},
+	"tile": {
+	    "type": "object",
+	    "properties": {
+			"x-coord": {
+				"type": "number",
+				"description": "X position of a Tile in a Panel",
+				"minimum": 1
+			},
+			"y-coord": {
+				"type": "number",
+				"description": "Y position of a Tile in a Panel",
+				"minimum": 1
+			}
+		},
+		"required": [
+		    "x-coord",
+		    "y-coord"
+		]
+	},
+	"tostate": {
+	    "type": "object",
+	    "description": "Names of the CBUS inputs that indicate Normal and Reverse position of turnout",
+	    "properties": {
+			"normal": {
+				"type": "string"
+			},
+			"reverse": {
+				"type": "string"
+			}
+	    },
+	    "required": [
+		"normal",
+		"reverse"
+	    ]
+	}
+    },
+    "cbusstates": {
+		"type": "object",
+		"properties": {
+			"name": { "$ref": "#/definitions/name" },
+			"event": {
+			"type": "string",
+			"description": "event to be sent / received from CBUS"
+			},
+			"state": [
+			"UNKN",
+			"ZERO",
+			"ONE"
+			]
+		},
+		"required": [
+			"name",
+			"state"
+		]
+    },
+    "layout": {
+		"controls": {
+			"type": "object",
+			"properties": {
+				"tile": { "$ref": "#/definitions/tile" },
+				"name": { "$ref": "#/definitions/name" },
+				"switch": {
+					"enum": [
+					"Toggle",
+					"PushButton"
+					]
+				},
+				"action": {
+					"type": "string",
+					"description": "Name of the CBUS output that controls a turnout"
+				},
+				"tostate": { "$ref": "#/definitions/tostate" }
+			},
+			"required": [
+				"tile",
+				"name",
+				"switch",
+				"action",
+				"tostate"
+			]
+		},
+		"panel": {
+			"type": "object",
+			"properties": {
+				"width": {
+					"type": "number",
+					"description": "Width of panel in tiles"
+				},
+				"height": {
+					"type": "number",
+					"description": "Height of panel in tiles"
+				},
+				"tilesize" : {
+					"type": "number",
+					"description": "Size of (square) tiles"
+				},
+				"colour": {
+					"type": "string",
+					"minLength": 7,
+					"maxLength": 7,
+					"description": "Colour of tile background as a hexadecimal string"
+				},
+				"margins" : {
+					"type": "number",
+					"description": "Margin around panel when drawn"
+				},
+				"border" : {
+					"type": "number",
+					"description": "Width of black boarder around panel"
+				},
+				"title": {
+					"type": "string",
+					"description": "Name of layout represented on panel"
+				}
+			},
+			"required": [
+				"width",
+				"height",
+				"tilesize",
+				"colour",
+				"margins",
+				"border",
+				"title"
+			]
+		},
+		"track": {
+			"type": "object",
+			"properties": {
+				"tile": { "$ref": "#/definitions/tile" },
+				"direction": {
+					"enum": [
+					"EW",
+					"NE",
+					"NS",
+					"NW",
+					"SE",
+					"SW"
+					]
+				},
+				"label": {
+					"type": "string"
+				},
+				"tcstate": {
+					"type": "string",
+					"description": "Name of the CBUS input that shows track circuit occupation"
+				},
+				"spot": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"tile",
+				"direction"
+			]
+		},
+		"turnouts": {
+			"type": "object",
+			"properties": {
+				"tile": { "$ref": "#/definitions/tile" },
+				"name": { "$ref": "#/definitions/name" },
+				"hand": {
+					"enum": [
+					"TOLeft",
+					"TORight",
+					"TOWye"
+				]
+				},
+				"orientation": {
+					"enum": [
+					"TONorth",
+					"TOEast",
+					"TOSouth",
+					"TOWest"
+					]
+				},
+				"tostate": { "$ref": "#/definitions/tostate" }
+			},
+			"required": [
+				"tile",
+				"name",
+				"hand",
+				"orientation"
+			]
+		},
+		"required": [
+			"controls",
+			"panel",
+			"track",
+			"turnouts"
+		]
+    }
+}
