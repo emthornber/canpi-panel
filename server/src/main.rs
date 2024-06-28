@@ -8,7 +8,6 @@ use tera::{from_value, to_value, Function, Tera, Value};
 use time::macros::format_description;
 
 mod errors;
-mod panels;
 mod state;
 mod validation;
 

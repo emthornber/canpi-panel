@@ -489,16 +489,16 @@ textAttr turnout offset =
 
         rotation =
             case turnout.orientation of
-                Model.TONorth ->
+                Model.North ->
                     "rotate(180)"
 
-                Model.TOEast ->
+                Model.East ->
                     "rotate(180)"
 
-                Model.TOSouth ->
+                Model.South ->
                     "rotate(0)"
 
-                Model.TOWest ->
+                Model.West ->
                     "rotate(0)"
     in
     [ SvgA.fontFamily "monospace"
@@ -525,16 +525,16 @@ turnoutFill turnout =
 turnoutRotation : Model.Turnout -> String
 turnoutRotation turnout =
     case turnout.orientation of
-        Model.TONorth ->
+        Model.North ->
             "rotate(90)"
 
-        Model.TOEast ->
+        Model.East ->
             "rotate(180)"
 
-        Model.TOSouth ->
+        Model.South ->
             "rotate(-90)"
 
-        Model.TOWest ->
+        Model.West ->
             "rotate(0)"
 
 
@@ -546,18 +546,18 @@ viewTurnouts layout =
 viewTurnout : Model.Turnout -> List (Svg.Svg Model.Msg)
 viewTurnout turnout =
     case turnout.hand of
-        Model.TOLeft ->
-            viewTOLeft turnout
+        Model.Left ->
+            viewLeft turnout
 
-        Model.TORight ->
-            viewTORight turnout
+        Model.Right ->
+            viewRight turnout
 
-        Model.TOWye ->
-            viewTOWye turnout
+        Model.Wye ->
+            viewWye turnout
 
 
-viewTOLeft : Model.Turnout -> List (Svg.Svg Model.Msg)
-viewTOLeft turnout =
+viewLeft : Model.Turnout -> List (Svg.Svg Model.Msg)
+viewLeft turnout =
     [ Svg.g
         [ SvgA.fill (turnoutFill turnout)
         , SvgA.stroke "black"
@@ -578,8 +578,8 @@ viewTOLeft turnout =
     ]
 
 
-viewTORight : Model.Turnout -> List (Svg.Svg Model.Msg)
-viewTORight turnout =
+viewRight : Model.Turnout -> List (Svg.Svg Model.Msg)
+viewRight turnout =
     [ Svg.g
         [ SvgA.fill (turnoutFill turnout)
         , SvgA.stroke "black"
@@ -600,8 +600,8 @@ viewTORight turnout =
     ]
 
 
-viewTOWye : Model.Turnout -> List (Svg.Svg Model.Msg)
-viewTOWye turnout =
+viewWye : Model.Turnout -> List (Svg.Svg Model.Msg)
+viewWye turnout =
     [ Svg.g
         [ SvgA.fill (turnoutFill turnout)
         , SvgA.stroke "black"
@@ -715,13 +715,13 @@ viewLever cbus turnout =
             ( Model.getOBState (getTON turnout.state) cbus, Model.getOBState (getTOR turnout.state) cbus )
     in
     case turnout.hand of
-        Model.TOLeft ->
+        Model.Left ->
             viewLeverLeft turnout (leverStroke status) (leverFill status) (turnoutRotation turnout)
 
-        Model.TORight ->
+        Model.Right ->
             viewLeverRight turnout (leverStroke status) (leverFill status) (turnoutRotation turnout)
 
-        Model.TOWye ->
+        Model.Wye ->
             viewLeverWye turnout (leverStroke status) (leverFill status) (turnoutRotation turnout)
 
 

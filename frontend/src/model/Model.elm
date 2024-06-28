@@ -281,16 +281,16 @@ tracks =
 
 
 type TurnoutHand
-    = TOLeft
-    | TORight
-    | TOWye
+    = Left
+    | Right
+    | Wye
 
 
 type TurnoutFacing
-    = TONorth
-    | TOEast
-    | TOSouth
-    | TOWest
+    = North
+    | East
+    | South
+    | West
 
 
 type alias Turnout =
@@ -299,23 +299,23 @@ type alias Turnout =
 
 turnouts : List Turnout
 turnouts =
-    [ Turnout ( 1, 1 ) "111" TOLeft TOWest Nothing
-    , Turnout ( 2, 1 ) "121" TOLeft TONorth (Just ( "101N", "101R" ))
-    , Turnout ( 3, 1 ) "121" TOLeft TOEast (Just ( "102N", "102R" ))
-    , Turnout ( 4, 1 ) "121" TOLeft TOSouth (Just ( "103N", "103R" ))
-    , Turnout ( 5, 1 ) "121" TOLeft TOWest (Just ( "105N", "105R" ))
-    , Turnout ( 1, 2 ) "131" TORight TOWest Nothing
-    , Turnout ( 2, 2 ) "131" TORight TONorth (Just ( "101N", "101R" ))
-    , Turnout ( 3, 2 ) "131" TORight TOEast (Just ( "102N", "102R" ))
-    , Turnout ( 4, 2 ) "131" TORight TOSouth (Just ( "103N", "103R" ))
-    , Turnout ( 6, 4 ) "101" TORight TOWest (Just ( "101N", "101R" ))
-    , Turnout ( 7, 4 ) "102" TORight TOWest (Just ( "102N", "102R" ))
-    , Turnout ( 8, 4 ) "103" TORight TOWest (Just ( "103N", "103R" ))
-    , Turnout ( 9, 4 ) "104" TORight TOWest (Just ( "104N", "104R" ))
-    , Turnout ( 10, 4 ) "105" TORight TOWest (Just ( "105N", "105R" ))
-    , Turnout ( 1, 3 ) "141" TOWye TOWest Nothing
-    , Turnout ( 2, 3 ) "141" TOWye TONorth (Just ( "101N", "101R" ))
-    , Turnout ( 3, 3 ) "141" TOWye TOEast (Just ( "102N", "102R" ))
-    , Turnout ( 4, 3 ) "141" TOWye TOSouth (Just ( "103N", "103R" ))
-    , Turnout ( 5, 3 ) "141" TOWye TOWest (Just ( "105N", "105R" ))
+    [ Turnout ( 1, 1 ) "111" Left West Nothing
+    , Turnout ( 2, 1 ) "121" Left North (Just ( "101N", "101R" ))
+    , Turnout ( 3, 1 ) "121" Left East (Just ( "102N", "102R" ))
+    , Turnout ( 4, 1 ) "121" Left South (Just ( "103N", "103R" ))
+    , Turnout ( 5, 1 ) "121" Left West (Just ( "105N", "105R" ))
+    , Turnout ( 1, 2 ) "131" Right West Nothing
+    , Turnout ( 2, 2 ) "131" Right North (Just ( "101N", "101R" ))
+    , Turnout ( 3, 2 ) "131" Right East (Just ( "102N", "102R" ))
+    , Turnout ( 4, 2 ) "131" Right South (Just ( "103N", "103R" ))
+    , Turnout ( 6, 4 ) "101" Right West (Just ( "101N", "101R" ))
+    , Turnout ( 7, 4 ) "102" Right West (Just ( "102N", "102R" ))
+    , Turnout ( 8, 4 ) "103" Right West (Just ( "103N", "103R" ))
+    , Turnout ( 9, 4 ) "104" Right West (Just ( "104N", "104R" ))
+    , Turnout ( 10, 4 ) "105" Right West (Just ( "105N", "105R" ))
+    , Turnout ( 1, 3 ) "141" Wye West Nothing
+    , Turnout ( 2, 3 ) "141" Wye North (Just ( "101N", "101R" ))
+    , Turnout ( 3, 3 ) "141" Wye East (Just ( "102N", "102R" ))
+    , Turnout ( 4, 3 ) "141" Wye South (Just ( "103N", "103R" ))
+    , Turnout ( 5, 3 ) "141" Wye West (Just ( "105N", "105R" ))
     ]

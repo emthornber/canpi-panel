@@ -1,83 +1,91 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "CBUS canweb Elm",
-    "definitions": {
-	"name": {
-	    "type": "string",
-	    "description": "Name to be used as a reference and/or label on a tile"
-	},
-	"tile": {
-	    "type": "object",
-	    "properties": {
-			"x-coord": {
-				"type": "number",
-				"description": "X position of a Tile in a Panel",
-				"minimum": 1
-			},
-			"y-coord": {
-				"type": "number",
-				"description": "Y position of a Tile in a Panel",
-				"minimum": 1
-			}
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"title": "CBUS canweb Elm",
+	"definitions": {
+		"name": {
+			"type": "string",
+			"description": "Name to be used as a reference and/or label on a tile"
 		},
-		"required": [
-		    "x-coord",
-		    "y-coord"
-		]
-	},
-	"tostate": {
-	    "type": "object",
-	    "description": "Names of the CBUS inputs that indicate Normal and Reverse position of turnout",
-	    "properties": {
-			"normal": {
-				"type": "string"
+		"tile": {
+			"type": "object",
+			"properties": {
+				"x_coord": {
+					"type": "number",
+					"description": "X position of a Tile in a Panel",
+					"minimum": 1
+				},
+				"y_coord": {
+					"type": "number",
+					"description": "Y position of a Tile in a Panel",
+					"minimum": 1
+				}
 			},
-			"reverse": {
-				"type": "string"
-			}
-	    },
-	    "required": [
-		"normal",
-		"reverse"
-	    ]
-	}
-    },
-    "cbusstates": {
+			"required": [
+				"x_coord",
+				"y_coord"
+			]
+		},
+		"tostate": {
+			"type": "object",
+			"description": "Names of the CBUS inputs that indicate Normal and Reverse position of turnout",
+			"properties": {
+				"normal": {
+					"type": "string"
+				},
+				"reverse": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"normal",
+				"reverse"
+			]
+		}
+	},
+	"cbusstates": {
 		"type": "object",
 		"properties": {
-			"name": { "$ref": "#/definitions/name" },
+			"name": {
+				"$ref": "#/definitions/name"
+			},
 			"event": {
-			"type": "string",
-			"description": "event to be sent / received from CBUS"
+				"type": "string",
+				"description": "event to be sent / received from CBUS"
 			},
 			"state": [
-			"UNKN",
-			"ZERO",
-			"ONE"
+				"UNKN",
+				"ZERO",
+				"ONE"
 			]
 		},
 		"required": [
 			"name",
 			"state"
 		]
-    },
-    "layout": {
+	},
+	"layout": {
 		"controls": {
 			"type": "object",
 			"properties": {
-				"tile": { "$ref": "#/definitions/tile" },
-				"name": { "$ref": "#/definitions/name" },
+				"tile": {
+					"$ref": "#/definitions/tile"
+				},
+				"name": {
+					"$ref": "#/definitions/name"
+				},
 				"switch": {
 					"enum": [
-					"Toggle",
-					"PushButton"
+						"Toggle",
+						"PushButton"
 					]
 				},
 				"action": {
 					"type": "string",
 					"description": "Name of the CBUS output that controls a turnout"
 				},
-				"tostate": { "$ref": "#/definitions/tostate" }
+				"tostate": {
+					"$ref": "#/definitions/tostate"
+				}
 			},
 			"required": [
 				"tile",
@@ -98,7 +106,7 @@
 					"type": "number",
 					"description": "Height of panel in tiles"
 				},
-				"tilesize" : {
+				"tilesize": {
 					"type": "number",
 					"description": "Size of (square) tiles"
 				},
@@ -108,11 +116,11 @@
 					"maxLength": 7,
 					"description": "Colour of tile background as a hexadecimal string"
 				},
-				"margins" : {
+				"margins": {
 					"type": "number",
 					"description": "Margin around panel when drawn"
 				},
-				"border" : {
+				"border": {
 					"type": "number",
 					"description": "Width of black boarder around panel"
 				},
@@ -134,15 +142,17 @@
 		"track": {
 			"type": "object",
 			"properties": {
-				"tile": { "$ref": "#/definitions/tile" },
+				"tile": {
+					"$ref": "#/definitions/tile"
+				},
 				"direction": {
 					"enum": [
-					"EW",
-					"NE",
-					"NS",
-					"NW",
-					"SE",
-					"SW"
+						"EW",
+						"NE",
+						"NS",
+						"NW",
+						"SE",
+						"SW"
 					]
 				},
 				"label": {
@@ -164,24 +174,30 @@
 		"turnouts": {
 			"type": "object",
 			"properties": {
-				"tile": { "$ref": "#/definitions/tile" },
-				"name": { "$ref": "#/definitions/name" },
+				"tile": {
+					"$ref": "#/definitions/tile"
+				},
+				"name": {
+					"$ref": "#/definitions/name"
+				},
 				"hand": {
 					"enum": [
-					"TOLeft",
-					"TORight",
-					"TOWye"
-				]
+						"Left",
+						"Right",
+						"Wye"
+					]
 				},
 				"orientation": {
 					"enum": [
-					"TONorth",
-					"TOEast",
-					"TOSouth",
-					"TOWest"
+						"North",
+						"East",
+						"South",
+						"West"
 					]
 				},
-				"tostate": { "$ref": "#/definitions/tostate" }
+				"tostate": {
+					"$ref": "#/definitions/tostate"
+				}
 			},
 			"required": [
 				"tile",
@@ -196,5 +212,5 @@
 			"track",
 			"turnouts"
 		]
-    }
+	}
 }

@@ -1,6 +1,7 @@
 use crate::errors::CanPiAppError;
-use crate::panels::Panel;
 use std::path::Path;
+
+use canpi_config::PanelList;
 
 #[macro_export]
 macro_rules! pkg_name {
@@ -18,7 +19,7 @@ pub struct CanpiConfig {
     pub cangrid_port: Option<String>,
     pub config_path: Option<String>,
     pub host_port: Option<String>,
-    pub panel_defn: Option<Panel>,
+    pub panel_defn: Option<PanelList>,
     pub panel_path: Option<String>,
     pub static_path: Option<String>,
     pub template_path: Option<String>,
@@ -39,8 +40,8 @@ impl CanpiConfig {
     pub fn new() -> Result<CanpiConfig, CanPiAppError> {
         let h = std::env::var("CPPANEL_HOME");
         if let Ok(home) = h {
-            let cps_home = home;
-            if !Path::new(&cps_home).is_dir() {
+            let cpp_home = home;
+            if !Path::new(&cpp_home).is_dir() {
                 return Err(CanPiAppError::NotFound(
                     "EV CPPANEL_HOME not a directory".to_string(),
                 ));
@@ -55,11 +56,11 @@ impl CanpiConfig {
                 template_path: None,
             };
 
-            let cfile = cps_home.clone() + "/" + STATIC + CFGFILE;
+            let cfile = cpp_home.clone() + "/" + STATIC + CFGFILE;
             if Path::new(&cfile).is_file() {
                 cfg.config_path = Some(cfile.clone());
                 let mut pkg = Pkg::new();
-                match pkg.load_packages(cfile) {
+                match pkg.load_panels(cfile) {
                     Ok(()) => cfg.pkg_defn = Some(pkg),
                     Err(e) => {
                         return Err(CanPiAppError::NotFound(format!(
@@ -80,11 +81,11 @@ impl CanpiConfig {
                     "EV HOST_PORT not valid".to_string(),
                 ));
             }
-            let sdir = cps_home.clone() + "/" + STATIC;
+            let sdir = cpp_home.clone() + "/" + STATIC;
             if Path::new(&sdir).is_dir() {
                 cfg.static_path = Some(sdir);
             }
-            let tdir = cps_home.clone() + "/" + TEMPLATE;
+            let tdir = cpp_home.clone() + "/" + TEMPLATE;
             let grandparent = Path::new(&tdir).parent().unwrap().parent().unwrap();
             if grandparent.is_dir() {
                 cfg.template_path = Some(tdir);

@@ -85,7 +85,7 @@ decodeControl =
 
 decodePosition : Decode.Decoder ( Int, Int )
 decodePosition =
-    Decode.map2 Tuple.pair (Decode.field "x-coord" Decode.int) (Decode.field "y-coord" Decode.int)
+    Decode.map2 Tuple.pair (Decode.field "x_coord" Decode.int) (Decode.field "y_coord" Decode.int)
 
 
 switchDecoder : String -> Decode.Decoder Model.Actuator
@@ -154,33 +154,33 @@ decodeTurnout =
 handDecoder : String -> Decode.Decoder Model.TurnoutHand
 handDecoder hand =
     case hand of
-        "TOLeft" ->
-            Decode.succeed Model.TOLeft
+        "Left" ->
+            Decode.succeed Model.Left
 
-        "TORight" ->
-            Decode.succeed Model.TORight
+        "Right" ->
+            Decode.succeed Model.Right
 
-        "TOWye" ->
-            Decode.succeed Model.TOWye
+        "Wye" ->
+            Decode.succeed Model.Wye
 
         _ ->
-            Decode.succeed Model.TOLeft
+            Decode.succeed Model.Left
 
 
 facingDecoder : String -> Decode.Decoder Model.TurnoutFacing
 facingDecoder hand =
     case hand of
-        "TONorth" ->
-            Decode.succeed Model.TONorth
+        "North" ->
+            Decode.succeed Model.North
 
-        "TOEast" ->
-            Decode.succeed Model.TOEast
+        "East" ->
+            Decode.succeed Model.East
 
-        "TOSouth" ->
-            Decode.succeed Model.TOSouth
+        "South" ->
+            Decode.succeed Model.South
 
-        "TOWest" ->
-            Decode.succeed Model.TOWest
+        "West" ->
+            Decode.succeed Model.West
 
         _ ->
-            Decode.succeed Model.TONorth
+            Decode.succeed Model.North
