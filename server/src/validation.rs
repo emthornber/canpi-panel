@@ -1,7 +1,8 @@
 use crate::errors::CanPiAppError;
+use ini::Ini;
 use std::path::Path;
 
-use canpi_config::PanelList;
+use server::{PanelHash, PanelList};
 
 #[macro_export]
 macro_rules! pkg_name {
@@ -10,18 +11,25 @@ macro_rules! pkg_name {
     };
 }
 
+const CANGRID_URI: &str = "localhost:5550";
 const CFGFILE: &str = "/canpi-panel.cfg";
+const PANEL_PATH: &str = "/usr/local/etc/canpi_panel/panels";
 const STATIC: &str = "/static";
 const TEMPLATE: &str = "/templates/**/*";
 
 /// Structure that holds configuration items expanded from EVs and static text
 pub struct CanpiConfig {
-    pub cangrid_port: Option<String>,
-    pub config_path: Option<String>,
+    /// Host and port that provides a CBus channel
+    pub cangrid_uri: String,
+    /// Host and port of the web service
     pub host_port: Option<String>,
-    pub panel_defn: Option<PanelList>,
-    pub panel_path: Option<String>,
+    /// List of valid panel definitions
+    pub panel_hash: Option<PanelHash>,
+    /// Directory containing panel definitions
+    pub panel_path: String,
+    /// Definition files
     pub static_path: Option<String>,
+    /// HTML templates
     pub template_path: Option<String>,
 }
 
@@ -47,32 +55,38 @@ impl CanpiConfig {
                 ));
             }
             let mut cfg = CanpiConfig {
-                cangrid_port: None,
-                config_path: None,
+                cangrid_uri: CANGRID_URI.to_string(),
                 host_port: None,
-                panel_defn: None,
-                panel_path: None,
+                panel_hash: None,
+                panel_path: PANEL_PATH.to_string(),
                 static_path: None,
                 template_path: None,
             };
 
             let cfile = cpp_home.clone() + "/" + STATIC + CFGFILE;
-            if Path::new(&cfile).is_file() {
-                cfg.config_path = Some(cfile.clone());
-                let mut pkg = Pkg::new();
-                match pkg.load_panels(cfile) {
-                    Ok(()) => cfg.pkg_defn = Some(pkg),
-                    Err(e) => {
-                        return Err(CanPiAppError::NotFound(format!(
-                            "Cannot load package configurations '{e}'"
-                        )))
+            let config_path = Path::new(&cfile);
+            if config_path.is_file() {
+                if let Ok(ini) = Ini::load_from_file(config_path) {
+                    let properties = ini.general_section();
+                    if let Some(uri) = properties.get("cangrid_uri") {
+                        cfg.cangrid_uri = uri.to_string();
+                    } else {
+                        log::info!("Default canpi grid uri used - {}", cfg.cangrid_uri);
+                    }
+                    if let Some(path) = properties.get("panel_path") {
+                        cfg.panel_path = path.to_string();
+                    } else {
+                        log::info!("Default panel directory used - {}", cfg.panel_path);
                     }
                 }
             } else {
-                return Err(CanPiAppError::NotFound(format!(
-                    "Configuration file '{cfile}' not found"
-                )));
+                log::info!("Configuration file '{cfile}' not found");
+                log::info!("canpi grid uri = {}", cfg.cangrid_uri);
+                log::info!("panel directory = {}", cfg.panel_path);
             }
+
+            let panel_list = PanelList::new(cfg.panel_path.clone());
+            cfg.panel_hash = panel_list.panels;
 
             if let Ok(port) = std::env::var("HOST_PORT") {
                 cfg.host_port = Some(port);

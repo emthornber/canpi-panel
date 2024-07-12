@@ -12,7 +12,7 @@
     "tooltip": "Address of GridConnect port e.g. localhost:5550",
     "current": "localhost:5550",
     "default": "localhost:5550",
-    "format": "[a-zA-Z0-9]{1,}",
+    "format": "[a-zA-Z0-9]{1,}:[0-9]{4,}",
     "action": "Edit"
   }
 }

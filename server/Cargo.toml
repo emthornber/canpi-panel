@@ -4,8 +4,18 @@ version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "canpi-panel"
+path = "src/main.rs"
+
+[[bin]]
+name = "json-schema"
+path = "src/bin/generate-json-schema.rs"
+
 
 [dependencies]
+#canpi-config = { git = "https://github.com/emthornber/canpi-config.git", branch = "lgtrunk" }
+# canpi-config = { path = "../../canpi-config" }
 actix-files = "0.6.5"
 actix-web = "4.6.0"
 dotenv = "0.15.0"
@@ -21,6 +31,9 @@ strfmt = "0.2.4"
 tera = { version = "1.20.0", features = ["builtins"] }
 thiserror = "1.0.61"
 time = "0.3.36"
+rust-ini = "0.21.0"
+itertools = "0.13.0"
+env_logger = "0.11.3"
 
 [dev-dependencies]
 actix-rt = "2.9.0"
