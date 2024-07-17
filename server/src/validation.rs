@@ -100,7 +100,7 @@ impl CanpiConfig {
                 cfg.static_path = Some(sdir);
             }
             let tdir = cpp_home.clone() + "/" + TEMPLATE;
-            let grandparent = Path::new(&tdir).parent().unwrap().parent().unwrap();
+            let grandparent = Path::new(&tdir).parent().and_then(Path::parent).unwrap();
             if grandparent.is_dir() {
                 cfg.template_path = Some(tdir);
             }

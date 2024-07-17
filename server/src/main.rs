@@ -10,11 +10,15 @@ use tera::{from_value, to_value, Function, Tera, Value};
 use time::macros::format_description;
 
 mod errors;
+mod handlers;
+// mod models;
 mod panels;
+mod routes;
 mod state;
 mod validation;
 
 use panels::*;
+use routes::*;
 use state::AppState;
 use validation::*;
 
@@ -72,19 +76,19 @@ async fn main() {
         let host_port = canpi_cfg.host_port.unwrap();
         let shared_data = web::Data::new(Mutex::new(AppState {
             cangrid_uri: canpi_cfg.cangrid_uri,
-            current_panel: None,
+            current_panel_index: None,
             panels: panel_hash,
         }));
         let mut tera = Tera::new(canpi_cfg.template_path.unwrap().as_str()).unwrap();
-        /* tera.register_function("scope_for", make_scope_for(&ROUTE_DATA));
+        tera.register_function("scope_for", make_scope_for(&ROUTE_DATA));
         let app = move || {
             App::new()
                 .app_data(web::Data::new(tera.clone()))
                 .app_data(shared_data.clone())
-                .configure(topic_routes)
+                // .configure(diagram_routes)
                 .configure(general_routes)
                 .service(fs::Files::new("/static", static_path.clone()).show_files_listing())
-        }; */
+        };
         log::info!("canpi panel app listening on http://{}", host_port);
         // HttpServer::new(app).bind(&host_port)?.run().await
     } else {

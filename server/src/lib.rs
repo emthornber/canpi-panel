@@ -2,7 +2,7 @@ use glob::glob;
 use jsonschema::JSONSchema;
 use schemars::schema::RootSchema;
 use schemars::{schema_for, JsonSchema};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 use std::{
@@ -214,7 +214,7 @@ impl Diagram {
     }
 }
 
-#[derive(Clone, Deserialize, Debug, JsonSchema)]
+#[derive(Clone, Serialize, Deserialize, Debug, JsonSchema)]
 #[allow(dead_code)]
 pub struct PanelDefinition {
     pub title: String,
@@ -386,9 +386,9 @@ mod test_panel_list {
 
     #[test]
     fn find_panel_definitions_more_than_zero() {
-        let json_file = "scratch/panel.json";
+        let json_file = "tests/panel.json";
         setup_file(json_file, "{}");
-        let panel_dir = "scratch/";
+        let panel_dir = "tests/";
         let pf = PanelList::find_panel_definitions(&panel_dir).unwrap();
         teardown_file(json_file);
         assert!(pf.len() > 0);

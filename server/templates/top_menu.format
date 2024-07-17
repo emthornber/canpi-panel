@@ -1,1 +1,1 @@
-<li><a href='{{ scope_for(scope="panel") ~ "/|index|" }}'>|title|</a></li>
+<li><a href='{{ scope_for(scope="panel") ~ "/panel/|index|" }}'>|title|</a></li>

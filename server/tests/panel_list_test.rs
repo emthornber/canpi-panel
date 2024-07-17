@@ -1,4 +1,4 @@
-use canpi_config::PanelList;
+use server::PanelList;
 
 #[test]
 fn panel_list_new() {
