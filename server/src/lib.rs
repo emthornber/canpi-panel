@@ -228,7 +228,7 @@ pub type PanelHash = HashMap<u8, PanelDefinition>;
 #[allow(dead_code)]
 pub struct PanelList {
     schema: JSONSchema,
-    pub panels: Option<PanelHash>,
+    pub panels: PanelHash,
 }
 
 impl PanelList {
@@ -251,13 +251,14 @@ impl PanelList {
 
     /// Load the panel definitions from `${panel_dir}/*.json`, extract 'title'
     /// from JSON definitions, and store in PanelHash.
-    fn load_panels<P: AsRef<Path>>(panel_dir: P, schema: &JSONSchema) -> Option<PanelHash> {
+    fn load_panels<P: AsRef<Path>>(panel_dir: P, schema: &JSONSchema) -> PanelHash {
+        // Always create an empty hash
+        let mut panels = PanelHash::new();
         // Read list of JSON files
         let pf = Self::find_panel_definitions(panel_dir);
         match pf {
             Ok(panel_files) => {
                 let mut index = 1;
-                let mut panels = PanelHash::new();
                 // Walk through file list
                 for panel in panel_files {
                     if let Ok(panel_defn) = Self::read_defn_file(panel, schema) {
@@ -268,18 +269,13 @@ impl PanelList {
                     }
                     // ignore failures
                 }
-                if panels.len() > 0 {
-                    Some(panels)
-                } else {
-                    None
-                }
             }
             Err(e) => {
                 // Log error text
-                error!("{}", e);
-                None
+                log::warn!("{}", e);
             }
         }
+        panels
     }
 
     /// Return list of all JSON files in 'panels' directory
@@ -423,21 +419,15 @@ mod test_panel_list {
         let schema = PanelList::create_diagram_schema();
         let panel_dir = "src/";
         let panel_hash = PanelList::load_panels(panel_dir, &schema);
-        match panel_hash {
-            Some(_) => assert!(false),
-            None => assert!(true),
-        }
+        assert_eq!(panel_hash.len(), 0, "Expect empty panel hash");
     }
 
     #[test]
     fn load_panels_invalid_json() {
         let schema = PanelList::create_diagram_schema();
-        let panel_dir = "scratch/";
+        let panel_dir = "static/";
         let panel_hash = PanelList::load_panels(panel_dir, &schema);
-        match panel_hash {
-            Some(_) => assert!(false),
-            None => assert!(true),
-        }
+        assert_eq!(panel_hash.len(), 0, "Expect empty panel hash");
     }
 
     #[test]
@@ -445,9 +435,6 @@ mod test_panel_list {
         let schema = PanelList::create_diagram_schema();
         let panel_dir = "tests/";
         let panel_hash = PanelList::load_panels(panel_dir, &schema);
-        match panel_hash {
-            Some(ph) => assert_eq!(ph.len(), 1),
-            None => assert!(false),
-        }
+        assert_eq!(panel_hash.len(), 1);
     }
 }

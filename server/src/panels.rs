@@ -72,12 +72,8 @@ mod panel_tests {
         let file_name_root = Path::new("templates");
         let mut format_file = file_name_root;
         let mut format_file = format_file.join("top_menu.format");
-        if let Some(ph) = panel_list.panels {
-            if let Err(e) = build_top_menu_html(&ph, format_file) {
-                assert!(false, "build failed");
-            }
-        } else {
-            assert!(false, "No panel hash");
+        if let Err(e) = build_top_menu_html(&panel_list.panels, format_file) {
+            assert!(false, "build failed");
         }
     }
 }

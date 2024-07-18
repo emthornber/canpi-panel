@@ -12,19 +12,20 @@ macro_rules! pkg_name {
 }
 
 const CANGRID_URI: &str = "localhost:5550";
-const CFGFILE: &str = "/canpi-panel.cfg";
-const PANEL_PATH: &str = "/usr/local/etc/canpi_panel/panels";
-const STATIC: &str = "/static";
-const TEMPLATE: &str = "/templates/**/*";
+const CFGFILE: &str = "canpi-panel.cfg";
+const PANEL_PATH: &str = "panels";
+const STATIC: &str = "static";
+const TEMPLATE: &str = "templates/**/*";
 
 /// Structure that holds configuration items expanded from EVs and static text
+#[derive(Debug)]
 pub struct CanpiConfig {
     /// Host and port that provides a CBus channel
     pub cangrid_uri: String,
     /// Host and port of the web service
     pub host_port: Option<String>,
     /// List of valid panel definitions
-    pub panel_hash: Option<PanelHash>,
+    pub panel_hash: PanelHash,
     /// Directory containing panel definitions
     pub panel_path: String,
     /// Definition files
@@ -54,16 +55,18 @@ impl CanpiConfig {
                     "EV CPPANEL_HOME not a directory".to_string(),
                 ));
             }
+            // Set default panel direcctory
+            let pfile = cpp_home.clone() + "/" + PANEL_PATH;
             let mut cfg = CanpiConfig {
                 cangrid_uri: CANGRID_URI.to_string(),
                 host_port: None,
-                panel_hash: None,
-                panel_path: PANEL_PATH.to_string(),
+                panel_hash: PanelHash::new(),
+                panel_path: pfile.to_string(),
                 static_path: None,
                 template_path: None,
             };
 
-            let cfile = cpp_home.clone() + "/" + STATIC + CFGFILE;
+            let cfile = cpp_home.clone() + "/" + STATIC + "/" + CFGFILE;
             let config_path = Path::new(&cfile);
             if config_path.is_file() {
                 if let Ok(ini) = Ini::load_from_file(config_path) {
@@ -73,7 +76,11 @@ impl CanpiConfig {
                     } else {
                         log::info!("Default canpi grid uri used - {}", cfg.cangrid_uri);
                     }
-                    if let Some(path) = properties.get("panel_path") {
+                    if let Some(mut path) = properties.get("panel_path") {
+                        let pp = cpp_home.clone() + "/" + path;
+                        if Path::new(&path).is_relative() {
+                            path = pp.as_str();
+                        }
                         cfg.panel_path = path.to_string();
                     } else {
                         log::info!("Default panel directory used - {}", cfg.panel_path);
@@ -104,7 +111,7 @@ impl CanpiConfig {
             if grandparent.is_dir() {
                 cfg.template_path = Some(tdir);
             }
-
+            log::info!("{:#?}", cfg);
             Ok(cfg)
         } else {
             Err(CanPiAppError::NotFound(

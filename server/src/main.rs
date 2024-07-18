@@ -37,8 +37,8 @@ fn make_scope_for<'a>(scopes: &'static HashMap<&'a str, String>) -> impl Functio
 }
 
 #[actix_web::main]
-// async fn main() -> std::io::Result<()> {
-async fn main() {
+async fn main() -> std::io::Result<()> {
+    // async fn main() {
     dotenv().ok();
     SimpleLogger::new()
         .with_level(log::LevelFilter::Warn)
@@ -54,7 +54,7 @@ async fn main() {
         let static_path = canpi_cfg.static_path.unwrap();
 
         // Create and load the configurations using the JSON schema files
-        let panel_hash = canpi_cfg.panel_hash.unwrap();
+        let panel_hash = canpi_cfg.panel_hash;
 
         // Create the top menu HTML include file
         if let Some(tmpl_path) = canpi_cfg.template_path.clone() {
@@ -77,6 +77,7 @@ async fn main() {
         let shared_data = web::Data::new(Mutex::new(AppState {
             cangrid_uri: canpi_cfg.cangrid_uri,
             current_panel_index: None,
+            layout_name: hostname::get()?.into_string().unwrap(),
             panels: panel_hash,
         }));
         let mut tera = Tera::new(canpi_cfg.template_path.unwrap().as_str()).unwrap();
@@ -90,7 +91,7 @@ async fn main() {
                 .service(fs::Files::new("/static", static_path.clone()).show_files_listing())
         };
         log::info!("canpi panel app listening on http://{}", host_port);
-        // HttpServer::new(app).bind(&host_port)?.run().await
+        HttpServer::new(app).bind(&host_port)?.run().await
     } else {
         log::error!("EV contents failed validation - exiting ...");
         process::exit(1);

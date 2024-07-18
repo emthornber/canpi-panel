@@ -12,10 +12,11 @@ pub async fn status_handler(
 ) -> Result<HttpResponse, Error> {
     let app_state = app_state.lock().unwrap();
     let mut ctx = tera::Context::new();
-    ctx.insert("panels", &app_state.panels);
+    ctx.insert("layout_name", &app_state.layout_name);
+    // ctx.insert("panels", &app_state.panels);
     let s = tmpl
         .render("index.html", &ctx)
-        .map_err(|_| CanPiAppError::TeraError("Template error".to_string()))?;
+        .map_err(|e| CanPiAppError::TeraError(format!("Template error - {:#?}", e.to_string())))?;
     Ok(HttpResponse::Ok().content_type("text/html").body(s))
 }
 
